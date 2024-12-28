@@ -1,0 +1,34 @@
+# .gitignore for a Go + Docker Compose project
+
+# Go build artifacts
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Python Virtual Environment
+venv
+
+# Module cache & vendor
+vendor/
+go.sum
+
+# OS / Editor / IDE
+*.swp
+*.swo
+*.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Docker / Compose
+*.env
+docker-compose.override.yml
+
+# Additional local config
+.envrc
+*.local

@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASS}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+  gnss-logger:
+    container_name: gnss-logger
+    build: .
+    # If your Pi uses /dev/ttyACM0 for the ZED-F9 device, map it in:
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    depends_on:
+      - influxdb
+    environment:
+      # Let the Go code read these at runtime:
+      - INFLUXDB_URL=${INFLUXDB_URL}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+    restart: unless-stopped
+    # If you need extra privileges for serial, you can do:
+    # privileged: true
+    # or sometimes:
+    # cap_add:
+    #   - SYS_ADMIN
+    # security_opt:
+    #   - seccomp:unconfined
+
+volumes:
+  influxdb_data:
+  grafana_data:
