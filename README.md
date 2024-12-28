@@ -91,9 +91,9 @@ This project demonstrates how to handle interleaved ASCII + binary streams relia
 
 **This launches:**
 
-influxdb at http://localhost:8086
-grafana at http://localhost:3000
-gnss-logger container, reading from /dev/ttyACM0 or /dev/ttyUSB0 (adjust in docker-compose.yml).
+    influxdb at http://rpi:8086
+    grafana at http://rpi:3000
+    gnss-logger container, reading from /dev/ttyACM0 or /dev/ttyUSB0 (adjust in docker-compose.yml).
 
 **Check logs:**
     
@@ -102,8 +102,8 @@ gnss-logger container, reading from /dev/ttyACM0 or /dev/ttyUSB0 (adjust in dock
 
 ## Access InfluxDB & Grafana:
 
-    InfluxDB: ```http://<your-Pi-ip>:8086``` (login with INFLUXDB_USER/PASS)
-    Grafana: ```http://<your-Pi-ip>:3000``` (default is admin/admin unless overridden)
+    InfluxDB: http://rpi:8086 (login with INFLUXDB_USER/PASS)
+    Grafana: http://rpi:3000 (default is admin/admin unless overridden)
 
 ## Usage / Examples
 
